@@ -1,12 +1,19 @@
 version: '3'
 services:
   quickstart.cloudera:
-    image: w261/w261-environment
+    image: w261/w261-environment:latest
     hostname: docker.w261
     privileged: true
+    user: root
+    environment:
+      - NB_USER=mouyuguang
+      - CHOWN_HOME=yes
+      - GRANT_SUDO=yes
+      - NB_UID=1001
+      - NB_GID=1000
     command: bash -c "/root/start-notebook.sh;/usr/bin/docker-quickstart"
     ports:
-      - "8888:8888"   # Hue server
+      - "8887:8888"   # Hue server
       - "8889:8889"   # jupyter
       - "10020:10020" # mapreduce job history server
       - "8022:22"     # ssh
@@ -20,11 +27,10 @@ services:
       - "8032:8032"   # yarn resource manager access
       - "8042:8042"   # yarn node manager
       - "60010:60010" # hbase
-      - "8080:8080"   # Hadoop Job Tracker
       - "4040:4040"   # Spark UI
-      - "4041:4041"   # Spark UI
-      - "4042:4042"   # Spark UI
+      - "8080:8080"   # Hadoop Job Tracker
     tty: true
     stdin_open: true
-    volumes: 
-      - .:/media/notebooks
+    volumes:
+      #- .:/media/notebooks
+      - /home/mouyuguang/w261:/media/notebooks
